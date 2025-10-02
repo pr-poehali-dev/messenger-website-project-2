@@ -29,6 +29,7 @@ const Index = () => {
     return saved ? JSON.parse(saved) : null;
   });
   const [showAuth, setShowAuth] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   const features = [
     {
@@ -134,17 +135,17 @@ const Index = () => {
     );
   }
 
-  if (currentUser && !showAuth) {
+  if (currentUser && showProfile) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="w-full max-w-4xl">
           <Button 
             variant="ghost" 
-            onClick={() => setCurrentUser(null)}
+            onClick={() => setShowProfile(false)}
             className="mb-4"
           >
             <Icon name="ArrowLeft" size={20} className="mr-2" />
-            Выйти из профиля
+            Назад на главную
           </Button>
           <UserProfile 
             user={currentUser} 
@@ -172,13 +173,23 @@ const Index = () => {
               <a href="#friends" className="text-gray-700 hover:text-primary transition-colors">Друзья</a>
               <a href="#support" className="text-gray-700 hover:text-primary transition-colors">Поддержка</a>
             </div>
-            <Button 
-              onClick={() => setShowAuth(true)}
-              className="gradient-blue-green text-white border-0 hover:opacity-90"
-            >
-              <Icon name="UserCircle" className="mr-2" size={18} />
-              Войти
-            </Button>
+            {currentUser ? (
+              <Button 
+                onClick={() => setShowProfile(true)}
+                className="gradient-blue-green text-white border-0 hover:opacity-90"
+              >
+                <Icon name="User" className="mr-2" size={18} />
+                {currentUser.username}
+              </Button>
+            ) : (
+              <Button 
+                onClick={() => setShowAuth(true)}
+                className="gradient-blue-green text-white border-0 hover:opacity-90"
+              >
+                <Icon name="UserCircle" className="mr-2" size={18} />
+                Войти
+              </Button>
+            )}
           </div>
         </div>
       </nav>
