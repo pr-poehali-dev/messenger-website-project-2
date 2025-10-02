@@ -4,9 +4,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
-import VoiceChat from "@/components/VoiceChat";
+import UnifiedChat from "@/components/UnifiedChat";
 import EncryptedChat from "@/components/EncryptedChat";
-import DiscordChat from "@/components/DiscordChat";
 import { useState } from "react";
 
 const Index = () => {
@@ -91,9 +90,8 @@ const Index = () => {
             <div className="hidden md:flex items-center gap-8">
               <a href="#home" className="text-gray-700 hover:text-primary transition-colors">Главная</a>
               <a href="#features" className="text-gray-700 hover:text-primary transition-colors">Возможности</a>
-              <a href="#chat" className="text-gray-700 hover:text-primary transition-colors">Чат</a>
+              <a href="#chat" className="text-gray-700 hover:text-primary transition-colors">Чат + Голос</a>
               <a href="#encryption" className="text-gray-700 hover:text-primary transition-colors">Шифрование</a>
-              <a href="#voice" className="text-gray-700 hover:text-primary transition-colors">Голосовой чат</a>
               <a href="#support" className="text-gray-700 hover:text-primary transition-colors">Поддержка</a>
             </div>
             <Button className="gradient-blue-green text-white border-0 hover:opacity-90">
@@ -203,12 +201,12 @@ const Index = () => {
       <section id="chat" className="py-20 px-6">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-5xl font-bold mb-4">Текстовый чат</h2>
+            <h2 className="text-5xl font-bold mb-4">Чат с голосовыми каналами</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Общайтесь в каналах, ставьте реакции и обменивайтесь сообщениями, как в Discord
+              Общайтесь текстом и голосом в одном месте, как в Discord
             </p>
           </div>
-          <DiscordChat />
+          <UnifiedChat />
         </div>
       </section>
 
@@ -221,20 +219,6 @@ const Index = () => {
             </p>
           </div>
           <EncryptedChat />
-        </div>
-      </section>
-
-      <section id="voice" className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-5xl font-bold mb-4">Голосовой чат</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Общайтесь голосом в реальном времени, как в Discord
-            </p>
-          </div>
-          <div className="flex justify-center">
-            <VoiceChat />
-          </div>
         </div>
       </section>
 
