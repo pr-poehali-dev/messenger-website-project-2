@@ -71,6 +71,9 @@ export default function EncryptedChat() {
 
     setMessages([...messages, message]);
     setNewMessage("");
+
+    const currentCount = parseInt(localStorage.getItem('totalMessages') || '0');
+    localStorage.setItem('totalMessages', (currentCount + 1).toString());
   };
 
   const copyToClipboard = (text: string) => {

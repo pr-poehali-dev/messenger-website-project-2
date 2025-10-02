@@ -1,7 +1,40 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/ui/icon";
 
 export default function HeroSection() {
+  const [userCount, setUserCount] = useState(0);
+  const [messageCount, setMessageCount] = useState(0);
+
+  useEffect(() => {
+    const savedUsers = localStorage.getItem('users');
+    const users = savedUsers ? JSON.parse(savedUsers) : [];
+    setUserCount(users.length);
+
+    const savedMessages = localStorage.getItem('totalMessages');
+    const messages = savedMessages ? parseInt(savedMessages) : 0;
+    setMessageCount(messages);
+
+    const interval = setInterval(() => {
+      const currentMessages = localStorage.getItem('totalMessages');
+      if (currentMessages) {
+        setMessageCount(parseInt(currentMessages));
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num.toString();
+  };
+
   return (
     <section id="home" className="pt-32 pb-20 px-6">
       <div className="container mx-auto">
@@ -28,12 +61,12 @@ export default function HeroSection() {
             </div>
             <div className="flex items-center gap-8 pt-4">
               <div>
-                <div className="text-3xl font-bold text-primary">0</div>
+                <div className="text-3xl font-bold text-primary">{formatNumber(userCount)}</div>
                 <div className="text-gray-600">Пользователей</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-secondary">0</div>
-                <div className="text-gray-600">Сообщений в день</div>
+                <div className="text-3xl font-bold text-secondary">{formatNumber(messageCount)}</div>
+                <div className="text-gray-600">Сообщений всего</div>
               </div>
             </div>
           </div>

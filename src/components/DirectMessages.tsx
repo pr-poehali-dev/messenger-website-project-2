@@ -72,6 +72,9 @@ export default function DirectMessages({ currentUserId, currentUserName, current
         ? { ...chat, lastMessage: newMessage, lastMessageTime: new Date() }
         : chat
     ));
+
+    const currentCount = parseInt(localStorage.getItem('totalMessages') || '0');
+    localStorage.setItem('totalMessages', (currentCount + 1).toString());
   };
 
   const formatTime = (date: Date) => {

@@ -160,6 +160,9 @@ export default function UnifiedChat() {
 
     setMessages([...messages, message]);
     setNewMessage("");
+
+    const currentCount = parseInt(localStorage.getItem('totalMessages') || '0');
+    localStorage.setItem('totalMessages', (currentCount + 1).toString());
   };
 
   const addReaction = (messageId: string, emoji: string) => {
