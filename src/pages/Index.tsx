@@ -254,7 +254,7 @@ const Index = () => {
             <Button 
               size="lg" 
               className="bg-[#0088CC] hover:bg-[#0077B3] text-white"
-              onClick={() => window.open('https://t.me/your_telegram', '_blank')}
+              onClick={() => window.open('https://t.me/Not_Lock1', '_blank')}
             >
               <Icon name="Send" className="mr-2" size={20} />
               Telegram
