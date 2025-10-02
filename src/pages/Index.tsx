@@ -60,12 +60,12 @@ const Index = () => {
       answer: "Группы предназначены для двусторонней коммуникации между участниками. Каналы - это инструмент для односторонней трансляции сообщений неограниченному числу подписчиков."
     },
     {
-      question: "Насколько безопасен NL Messenger?",
+      question: "Насколько безопасен Not Lock Messenger?",
       answer: "Мы используем сквозное шифрование для всех сообщений, двухфакторную аутентификацию и протокол MTProto. Ваши данные надежно защищены от третьих лиц."
     },
     {
-      question: "Можно ли использовать NL на нескольких устройствах?",
-      answer: "Да! NL синхронизируется между всеми вашими устройствами. Начните переписку на телефоне и продолжите на компьютере или планшете."
+      question: "Можно ли использовать Not Lock на нескольких устройствах?",
+      answer: "Да! Not Lock синхронизируется между всеми вашими устройствами. Начните переписку на телефоне и продолжите на компьютере или планшете."
     }
   ];
 
@@ -224,7 +224,7 @@ const Index = () => {
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-5xl font-bold mb-4">Частые вопросы</h2>
             <p className="text-xl text-gray-600">
-              Ответы на популярные вопросы о NL Messenger
+              Ответы на популярные вопросы о Not Lock Messenger
             </p>
           </div>
           <Accordion type="single" collapsible className="space-y-4">
@@ -302,7 +302,7 @@ const Index = () => {
                 <div className="w-10 h-10 rounded-2xl gradient-blue-green flex items-center justify-center">
                   <Icon name="MessageCircle" className="text-white" size={24} />
                 </div>
-                <span className="text-2xl font-bold">NL</span>
+                <span className="text-2xl font-bold">Not Lock</span>
               </div>
               <p className="text-gray-400">
                 Современный мессенджер для быстрого и безопасного общения
@@ -334,7 +334,7 @@ const Index = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400">© 2024 NL Messenger. Все права защищены.</p>
+            <p className="text-gray-400">© 2024 Not Lock Messenger. Все права защищены.</p>
             <div className="flex gap-6">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <Icon name="Twitter" size={20} />
