@@ -31,139 +31,15 @@ interface FriendRequest {
 }
 
 export default function FriendsList() {
-  const [friends, setFriends] = useState<Friend[]>([
-    {
-      id: "1",
-      name: "Алексей Смирнов",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
-      status: "online",
-      statusText: "Играет в игру",
-      mutualFriends: 15,
-      bio: "Разработчик и геймер",
-      tags: ["Программирование", "Игры", "Музыка"],
-      joinedDate: new Date(2024, 0, 15)
-    },
-    {
-      id: "2",
-      name: "Мария Иванова",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=maria",
-      status: "away",
-      statusText: "Отошла",
-      mutualFriends: 8,
-      bio: "Дизайнер UI/UX",
-      tags: ["Дизайн", "Искусство"],
-      joinedDate: new Date(2024, 1, 20)
-    },
-    {
-      id: "3",
-      name: "Дмитрий Петров",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dmitry",
-      status: "dnd",
-      statusText: "Не беспокоить",
-      mutualFriends: 12,
-      bio: "Backend разработчик",
-      tags: ["Python", "DevOps"],
-      joinedDate: new Date(2023, 11, 5)
-    },
-    {
-      id: "4",
-      name: "Елена Соколова",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=elena",
-      status: "offline",
-      mutualFriends: 5,
-      bio: "Менеджер проектов",
-      tags: ["Управление", "Agile"],
-      joinedDate: new Date(2024, 2, 10)
-    },
-    {
-      id: "5",
-      name: "Иван Козлов",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=ivan",
-      status: "online",
-      statusText: "Пишет код",
-      mutualFriends: 20,
-      bio: "Full-stack разработчик",
-      tags: ["React", "Node.js", "TypeScript"],
-      joinedDate: new Date(2023, 9, 1)
-    }
-  ]);
-
-  const [requests, setRequests] = useState<FriendRequest[]>([
-    {
-      id: "r1",
-      userId: "u1",
-      name: "Анна Волкова",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=anna",
-      mutualFriends: 3,
-      sentAt: new Date(),
-      type: "incoming"
-    },
-    {
-      id: "r2",
-      userId: "u2",
-      name: "Сергей Новиков",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sergey",
-      mutualFriends: 7,
-      sentAt: new Date(),
-      type: "incoming"
-    }
-  ]);
-
+  const [friends, setFriends] = useState<Friend[]>([]);
+  const [requests, setRequests] = useState<FriendRequest[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [addFriendQuery, setAddFriendQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Friend[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  
-  const allUsers: Friend[] = [
-    {
-      id: "s1",
-      name: "Ольга Морозова",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=olga",
-      status: "online",
-      mutualFriends: 4,
-      bio: "Frontend разработчик",
-      tags: ["React", "CSS"]
-    },
-    {
-      id: "s2",
-      name: "Павел Лебедев",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=pavel",
-      status: "offline",
-      mutualFriends: 2,
-      bio: "QA инженер",
-      tags: ["Testing", "Automation"]
-    },
-    {
-      id: "s3",
-      name: "Наталья Белова",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=natalia",
-      status: "online",
-      mutualFriends: 6,
-      bio: "Product Manager",
-      tags: ["Product", "Strategy"]
-    },
-    {
-      id: "s4",
-      name: "Андрей Орлов",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=andrey",
-      status: "away",
-      mutualFriends: 1,
-      bio: "DevOps Engineer",
-      tags: ["Docker", "Kubernetes"]
-    },
-    {
-      id: "s5",
-      name: "Светлана Зайцева",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=svetlana",
-      status: "online",
-      mutualFriends: 9,
-      bio: "UX Researcher",
-      tags: ["UX", "Research"]
-    }
-  ];
-  
-  const [suggestions] = useState<Friend[]>(allUsers.slice(0, 2));
   const [blockedUsers, setBlockedUsers] = useState<Friend[]>([]);
+  
+  const allUsers: Friend[] = [];
 
   const acceptRequest = (requestId: string) => {
     const request = requests.find(r => r.id === requestId);
@@ -206,7 +82,7 @@ export default function FriendsList() {
   };
 
   const sendFriendRequest = (userId: string) => {
-    const user = searchResults.find(s => s.id === userId) || suggestions.find(s => s.id === userId);
+    const user = searchResults.find(s => s.id === userId);
     if (user) {
       const newRequest: FriendRequest = {
         id: Date.now().toString(),
@@ -311,8 +187,15 @@ export default function FriendsList() {
               </div>
 
               <ScrollArea className="h-[400px] pr-4">
-                <div className="space-y-3">
-                  {filteredFriends.map((friend) => (
+                {filteredFriends.length === 0 ? (
+                  <div className="text-center py-12 text-gray-500">
+                    <Icon name="Users" size={48} className="mx-auto mb-3 opacity-50" />
+                    <p>Список друзей пуст</p>
+                    <p className="text-sm mt-2">Найдите друзей во вкладке "Добавить"</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {filteredFriends.map((friend) => (
                     <div key={friend.id} className="flex items-start gap-3 p-4 rounded-lg hover:bg-gray-50 transition-colors group border border-transparent hover:border-gray-200">
                       <div className="relative">
                         <img 
@@ -372,30 +255,37 @@ export default function FriendsList() {
             {/* Онлайн друзья */}
             <TabsContent value="online" className="space-y-4">
               <ScrollArea className="h-[400px] pr-4">
-                <div className="space-y-3">
-                  {friends.filter(f => f.status === "online").map((friend) => (
-                    <div key={friend.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                      <div className="relative">
-                        <img 
-                          src={friend.avatar} 
-                          alt={friend.name}
-                          className="w-12 h-12 rounded-full"
-                        />
-                        <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                {friends.filter(f => f.status === "online").length === 0 ? (
+                  <div className="text-center py-12 text-gray-500">
+                    <Icon name="Users" size={48} className="mx-auto mb-3 opacity-50" />
+                    <p>Нет друзей онлайн</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {friends.filter(f => f.status === "online").map((friend) => (
+                      <div key={friend.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <div className="relative">
+                          <img 
+                            src={friend.avatar} 
+                            alt={friend.name}
+                            className="w-12 h-12 rounded-full"
+                          />
+                          <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold truncate">{friend.name}</p>
+                          <p className="text-sm text-green-600 truncate">
+                            {friend.statusText || "В сети"}
+                          </p>
+                        </div>
+                        <Button size="sm">
+                          <Icon name="MessageCircle" size={16} className="mr-1" />
+                          Написать
+                        </Button>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold truncate">{friend.name}</p>
-                        <p className="text-sm text-green-600 truncate">
-                          {friend.statusText || "В сети"}
-                        </p>
-                      </div>
-                      <Button size="sm">
-                        <Icon name="MessageCircle" size={16} className="mr-1" />
-                        Написать
-                      </Button>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </ScrollArea>
             </TabsContent>
 
@@ -585,37 +475,11 @@ export default function FriendsList() {
                   </div>
                 )}
 
-                {/* Рекомендации */}
+                {/* Подсказка для пустого состояния */}
                 {!isSearching && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
-                      Возможно, вы знаете
-                    </h3>
-                    <div className="space-y-3">
-                      {suggestions.map((suggestion) => (
-                        <div key={suggestion.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                          <img 
-                            src={suggestion.avatar} 
-                            alt={suggestion.name}
-                            className="w-12 h-12 rounded-full"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="font-semibold truncate">{suggestion.name}</p>
-                            <p className="text-xs text-gray-500 mb-1">{suggestion.bio}</p>
-                            <p className="text-xs text-blue-600">
-                              {suggestion.mutualFriends} общих друзей
-                            </p>
-                          </div>
-                          <Button 
-                            size="sm"
-                            onClick={() => sendFriendRequest(suggestion.id)}
-                          >
-                            <Icon name="UserPlus" size={16} className="mr-1" />
-                            Добавить
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="text-center py-12 text-gray-500">
+                    <Icon name="UserSearch" size={48} className="mx-auto mb-3 opacity-50" />
+                    <p>Используйте поиск выше, чтобы найти друзей</p>
                   </div>
                 )}
               </div>
