@@ -8,6 +8,7 @@ import UnifiedChat from "@/components/UnifiedChat";
 import EncryptedChat from "@/components/EncryptedChat";
 import AuthSystem from "@/components/AuthSystem";
 import UserProfile from "@/components/UserProfile";
+import DirectMessages from "@/components/DirectMessages";
 import { useState } from "react";
 
 interface User {
@@ -138,7 +139,8 @@ const Index = () => {
             <div className="hidden md:flex items-center gap-8">
               <a href="#home" className="text-gray-700 hover:text-primary transition-colors">Главная</a>
               <a href="#features" className="text-gray-700 hover:text-primary transition-colors">Возможности</a>
-              <a href="#chat" className="text-gray-700 hover:text-primary transition-colors">Чат + Голос</a>
+              <a href="#chat" className="text-gray-700 hover:text-primary transition-colors">Чат</a>
+              <a href="#dm" className="text-gray-700 hover:text-primary transition-colors">ЛС</a>
               <a href="#encryption" className="text-gray-700 hover:text-primary transition-colors">Шифрование</a>
               <a href="#support" className="text-gray-700 hover:text-primary transition-colors">Поддержка</a>
             </div>
@@ -262,7 +264,23 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="encryption" className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
+      <section id="dm" className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-5xl font-bold mb-4">Личные сообщения</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Переписывайтесь с друзьями в приватных чатах
+            </p>
+          </div>
+          <DirectMessages 
+            currentUserId="me"
+            currentUserName={currentUser?.username || "Гость"}
+            currentUserAvatar={currentUser?.avatar || "https://api.dicebear.com/7.x/avataaars/svg?seed=guest"}
+          />
+        </div>
+      </section>
+
+      <section id="encryption" className="py-20 px-6">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-5xl font-bold mb-4">End-to-End шифрование</h2>
