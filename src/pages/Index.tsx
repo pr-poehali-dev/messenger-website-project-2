@@ -20,6 +20,7 @@ interface User {
   password: string;
   avatar: string;
   createdAt: Date;
+  status?: 'online' | 'idle' | 'dnd' | 'invisible';
 }
 
 const Index = () => {

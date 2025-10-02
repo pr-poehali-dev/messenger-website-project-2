@@ -18,12 +18,19 @@ interface UserProfileProps {
   user: User;
   onLogout: () => void;
   onUpdateAvatar: (avatar: string) => void;
+  onUpdateStatus?: (status: 'online' | 'idle' | 'dnd' | 'invisible') => void;
 }
 
-export default function UserProfile({ user, onLogout, onUpdateAvatar }: UserProfileProps) {
+export default function UserProfile({ user, onLogout, onUpdateAvatar, onUpdateStatus }: UserProfileProps) {
   const [showAvatarCreator, setShowAvatarCreator] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<'online' | 'idle' | 'dnd' | 'invisible'>(user.status || 'online');
   const [showStatusMenu, setShowStatusMenu] = useState(false);
+
+  const handleStatusChange = (status: 'online' | 'idle' | 'dnd' | 'invisible') => {
+    setCurrentStatus(status);
+    setShowStatusMenu(false);
+    onUpdateStatus?.(status);
+  };
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('ru-RU', {
       year: 'numeric',
