@@ -64,7 +64,7 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
       email: registerEmail,
       username: registerUsername,
       password: registerPassword,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${registerUsername}`,
+      avatar: "https://cdn.poehali.dev/files/b4dd4c30-699b-4f6f-a2d2-927daeee8639.png",
       createdAt: new Date()
     };
 
