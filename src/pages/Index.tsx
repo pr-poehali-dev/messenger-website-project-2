@@ -24,7 +24,10 @@ interface User {
 
 const Index = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    const saved = localStorage.getItem('currentUser');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [showAuth, setShowAuth] = useState(false);
 
   const features = [
@@ -102,11 +105,14 @@ const Index = () => {
 
   const handleLogout = () => {
     setCurrentUser(null);
+    localStorage.removeItem('currentUser');
   };
 
   const handleUpdateAvatar = (avatar: string) => {
     if (currentUser) {
-      setCurrentUser({ ...currentUser, avatar });
+      const updatedUser = { ...currentUser, avatar };
+      setCurrentUser(updatedUser);
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
     }
   };
 

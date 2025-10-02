@@ -20,7 +20,10 @@ interface AuthSystemProps {
 }
 
 export default function AuthSystem({ onLogin }: AuthSystemProps) {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>(() => {
+    const saved = localStorage.getItem('users');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -65,7 +68,9 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
       createdAt: new Date()
     };
 
-    setUsers([...users, newUser]);
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
     setSuccess("Регистрация успешна! Теперь можете войти");
     setRegisterEmail("");
     setRegisterUsername("");
@@ -90,6 +95,7 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
       return;
     }
 
+    localStorage.setItem('currentUser', JSON.stringify(user));
     onLogin(user);
     setSuccess("Вход выполнен успешно!");
   };
