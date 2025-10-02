@@ -111,14 +111,18 @@ export default function FriendsList() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [addFriendQuery, setAddFriendQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Friend[]>([
+  const [searchResults, setSearchResults] = useState<Friend[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  
+  const allUsers: Friend[] = [
     {
       id: "s1",
       name: "Ольга Морозова",
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=olga",
       status: "online",
       mutualFriends: 4,
-      bio: "Frontend разработчик"
+      bio: "Frontend разработчик",
+      tags: ["React", "CSS"]
     },
     {
       id: "s2",
@@ -126,9 +130,39 @@ export default function FriendsList() {
       avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=pavel",
       status: "offline",
       mutualFriends: 2,
-      bio: "QA инженер"
+      bio: "QA инженер",
+      tags: ["Testing", "Automation"]
+    },
+    {
+      id: "s3",
+      name: "Наталья Белова",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=natalia",
+      status: "online",
+      mutualFriends: 6,
+      bio: "Product Manager",
+      tags: ["Product", "Strategy"]
+    },
+    {
+      id: "s4",
+      name: "Андрей Орлов",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=andrey",
+      status: "away",
+      mutualFriends: 1,
+      bio: "DevOps Engineer",
+      tags: ["Docker", "Kubernetes"]
+    },
+    {
+      id: "s5",
+      name: "Светлана Зайцева",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=svetlana",
+      status: "online",
+      mutualFriends: 9,
+      bio: "UX Researcher",
+      tags: ["UX", "Research"]
     }
-  ]);
+  ];
+  
+  const [suggestions] = useState<Friend[]>(allUsers.slice(0, 2));
   const [blockedUsers, setBlockedUsers] = useState<Friend[]>([]);
 
   const acceptRequest = (requestId: string) => {
@@ -150,20 +184,41 @@ export default function FriendsList() {
     setRequests(requests.filter(r => r.id !== requestId));
   };
 
+  const searchUsers = (query: string) => {
+    setAddFriendQuery(query);
+    
+    if (!query.trim()) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+    
+    setIsSearching(true);
+    
+    const results = allUsers.filter(user => 
+      !friends.some(f => f.id === user.id) &&
+      !requests.some(r => r.userId === user.id) &&
+      !blockedUsers.some(b => b.id === user.id) &&
+      user.name.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setSearchResults(results);
+  };
+
   const sendFriendRequest = (userId: string) => {
-    const suggestion = suggestions.find(s => s.id === userId);
-    if (suggestion) {
+    const user = searchResults.find(s => s.id === userId) || suggestions.find(s => s.id === userId);
+    if (user) {
       const newRequest: FriendRequest = {
         id: Date.now().toString(),
-        userId: suggestion.id,
-        name: suggestion.name,
-        avatar: suggestion.avatar,
-        mutualFriends: suggestion.mutualFriends || 0,
+        userId: user.id,
+        name: user.name,
+        avatar: user.avatar,
+        mutualFriends: user.mutualFriends || 0,
         sentAt: new Date(),
         type: "outgoing"
       };
       setRequests([...requests, newRequest]);
-      setSuggestions(suggestions.filter(s => s.id !== userId));
+      setSearchResults(searchResults.filter(s => s.id !== userId));
     }
   };
 
@@ -468,45 +523,101 @@ export default function FriendsList() {
             <TabsContent value="add" className="space-y-4">
               <div className="space-y-4">
                 <div>
-                  <Input
-                    placeholder="Введите имя пользователя или email"
-                    value={addFriendQuery}
-                    onChange={(e) => setAddFriendQuery(e.target.value)}
-                  />
+                  <div className="relative">
+                    <Icon name="Search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Input
+                      placeholder="Поиск по никнейму..."
+                      value={addFriendQuery}
+                      onChange={(e) => searchUsers(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
                   <p className="text-xs text-gray-500 mt-2">
-                    💡 Поиск по имени, email или ID пользователя
+                    💡 Начните вводить никнейм для поиска пользователей
                   </p>
                 </div>
 
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
-                    Возможно, вы знаете
-                  </h3>
-                  <div className="space-y-3">
-                    {suggestions.map((suggestion) => (
-                      <div key={suggestion.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <img 
-                          src={suggestion.avatar} 
-                          alt={suggestion.name}
-                          className="w-12 h-12 rounded-full"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold truncate">{suggestion.name}</p>
-                          <p className="text-sm text-gray-500">
-                            {suggestion.mutualFriends} общих друзей
-                          </p>
-                        </div>
-                        <Button 
-                          size="sm"
-                          onClick={() => sendFriendRequest(suggestion.id)}
-                        >
-                          <Icon name="UserPlus" size={16} className="mr-1" />
-                          Добавить
-                        </Button>
+                {/* Результаты поиска */}
+                {isSearching && searchResults.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
+                      Результаты поиска ({searchResults.length})
+                    </h3>
+                    <ScrollArea className="h-[250px] pr-4">
+                      <div className="space-y-3">
+                        {searchResults.map((user) => (
+                          <div key={user.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border border-gray-200">
+                            <div className="relative">
+                              <img 
+                                src={user.avatar} 
+                                alt={user.name}
+                                className="w-12 h-12 rounded-full"
+                              />
+                              <div className={`absolute bottom-0 right-0 w-3 h-3 ${getStatusColor(user.status)} border-2 border-white rounded-full`}></div>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold truncate">{user.name}</p>
+                              <p className="text-xs text-gray-500 mb-1">{user.bio}</p>
+                              {user.mutualFriends && user.mutualFriends > 0 && (
+                                <p className="text-xs text-blue-600">
+                                  {user.mutualFriends} общих друзей
+                                </p>
+                              )}
+                            </div>
+                            <Button 
+                              size="sm"
+                              onClick={() => sendFriendRequest(user.id)}
+                            >
+                              <Icon name="UserPlus" size={16} className="mr-1" />
+                              Добавить
+                            </Button>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </ScrollArea>
                   </div>
-                </div>
+                )}
+
+                {isSearching && searchResults.length === 0 && addFriendQuery.trim() && (
+                  <div className="text-center py-8 text-gray-500">
+                    <Icon name="SearchX" size={48} className="mx-auto mb-3 opacity-50" />
+                    <p>Пользователей с никнеймом "{addFriendQuery}" не найдено</p>
+                  </div>
+                )}
+
+                {/* Рекомендации */}
+                {!isSearching && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
+                      Возможно, вы знаете
+                    </h3>
+                    <div className="space-y-3">
+                      {suggestions.map((suggestion) => (
+                        <div key={suggestion.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                          <img 
+                            src={suggestion.avatar} 
+                            alt={suggestion.name}
+                            className="w-12 h-12 rounded-full"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold truncate">{suggestion.name}</p>
+                            <p className="text-xs text-gray-500 mb-1">{suggestion.bio}</p>
+                            <p className="text-xs text-blue-600">
+                              {suggestion.mutualFriends} общих друзей
+                            </p>
+                          </div>
+                          <Button 
+                            size="sm"
+                            onClick={() => sendFriendRequest(suggestion.id)}
+                          >
+                            <Icon name="UserPlus" size={16} className="mr-1" />
+                            Добавить
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </TabsContent>
           </Tabs>
