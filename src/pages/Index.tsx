@@ -9,6 +9,7 @@ import EncryptedChat from "@/components/EncryptedChat";
 import AuthSystem from "@/components/AuthSystem";
 import UserProfile from "@/components/UserProfile";
 import DirectMessages from "@/components/DirectMessages";
+import FriendsList from "@/components/FriendsList";
 import { useState } from "react";
 
 interface User {
@@ -136,12 +137,12 @@ const Index = () => {
             <div className="flex items-center gap-2">
               <img src="https://cdn.poehali.dev/files/b4dd4c30-699b-4f6f-a2d2-927daeee8639.png" alt="Not Lock" className="h-10 w-auto rounded-xl" />
             </div>
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6">
               <a href="#home" className="text-gray-700 hover:text-primary transition-colors">Главная</a>
               <a href="#features" className="text-gray-700 hover:text-primary transition-colors">Возможности</a>
               <a href="#chat" className="text-gray-700 hover:text-primary transition-colors">Чат</a>
               <a href="#dm" className="text-gray-700 hover:text-primary transition-colors">ЛС</a>
-              <a href="#encryption" className="text-gray-700 hover:text-primary transition-colors">Шифрование</a>
+              <a href="#friends" className="text-gray-700 hover:text-primary transition-colors">Друзья</a>
               <a href="#support" className="text-gray-700 hover:text-primary transition-colors">Поддержка</a>
             </div>
             <Button 
@@ -280,7 +281,19 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="encryption" className="py-20 px-6">
+      <section id="friends" className="py-20 px-6">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-5xl font-bold mb-4">Друзья</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Управляйте списком друзей и запросами на добавление
+            </p>
+          </div>
+          <FriendsList />
+        </div>
+      </section>
+
+      <section id="encryption" className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-5xl font-bold mb-4">End-to-End шифрование</h2>
