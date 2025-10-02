@@ -119,7 +119,17 @@ const Index = () => {
   if (showAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
-        <AuthSystem onLogin={handleLogin} />
+        <div className="w-full max-w-md">
+          <Button 
+            variant="ghost" 
+            onClick={() => setShowAuth(false)}
+            className="mb-4"
+          >
+            <Icon name="ArrowLeft" size={20} className="mr-2" />
+            Назад на главную
+          </Button>
+          <AuthSystem onLogin={handleLogin} />
+        </div>
       </div>
     );
   }
@@ -127,11 +137,21 @@ const Index = () => {
   if (currentUser && !showAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
-        <UserProfile 
-          user={currentUser} 
-          onLogout={handleLogout}
-          onUpdateAvatar={handleUpdateAvatar}
-        />
+        <div className="w-full max-w-4xl">
+          <Button 
+            variant="ghost" 
+            onClick={() => setCurrentUser(null)}
+            className="mb-4"
+          >
+            <Icon name="ArrowLeft" size={20} className="mr-2" />
+            Выйти из профиля
+          </Button>
+          <UserProfile 
+            user={currentUser} 
+            onLogout={handleLogout}
+            onUpdateAvatar={handleUpdateAvatar}
+          />
+        </div>
       </div>
     );
   }
