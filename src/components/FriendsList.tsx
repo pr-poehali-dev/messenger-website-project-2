@@ -4,15 +4,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
 
 interface Friend {
   id: string;
   name: string;
   avatar: string;
-  status: "online" | "offline" | "away";
+  status: "online" | "offline" | "away" | "dnd";
   statusText?: string;
   mutualFriends?: number;
+  bio?: string;
+  tags?: string[];
+  joinedDate?: Date;
+  isBlocked?: boolean;
 }
 
 interface FriendRequest {
@@ -26,13 +31,105 @@ interface FriendRequest {
 }
 
 export default function FriendsList() {
-  const [friends, setFriends] = useState<Friend[]>([]);
+  const [friends, setFriends] = useState<Friend[]>([
+    {
+      id: "1",
+      name: "Алексей Смирнов",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=alex",
+      status: "online",
+      statusText: "Играет в игру",
+      mutualFriends: 15,
+      bio: "Разработчик и геймер",
+      tags: ["Программирование", "Игры", "Музыка"],
+      joinedDate: new Date(2024, 0, 15)
+    },
+    {
+      id: "2",
+      name: "Мария Иванова",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=maria",
+      status: "away",
+      statusText: "Отошла",
+      mutualFriends: 8,
+      bio: "Дизайнер UI/UX",
+      tags: ["Дизайн", "Искусство"],
+      joinedDate: new Date(2024, 1, 20)
+    },
+    {
+      id: "3",
+      name: "Дмитрий Петров",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=dmitry",
+      status: "dnd",
+      statusText: "Не беспокоить",
+      mutualFriends: 12,
+      bio: "Backend разработчик",
+      tags: ["Python", "DevOps"],
+      joinedDate: new Date(2023, 11, 5)
+    },
+    {
+      id: "4",
+      name: "Елена Соколова",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=elena",
+      status: "offline",
+      mutualFriends: 5,
+      bio: "Менеджер проектов",
+      tags: ["Управление", "Agile"],
+      joinedDate: new Date(2024, 2, 10)
+    },
+    {
+      id: "5",
+      name: "Иван Козлов",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=ivan",
+      status: "online",
+      statusText: "Пишет код",
+      mutualFriends: 20,
+      bio: "Full-stack разработчик",
+      tags: ["React", "Node.js", "TypeScript"],
+      joinedDate: new Date(2023, 9, 1)
+    }
+  ]);
 
-  const [requests, setRequests] = useState<FriendRequest[]>([]);
+  const [requests, setRequests] = useState<FriendRequest[]>([
+    {
+      id: "r1",
+      userId: "u1",
+      name: "Анна Волкова",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=anna",
+      mutualFriends: 3,
+      sentAt: new Date(),
+      type: "incoming"
+    },
+    {
+      id: "r2",
+      userId: "u2",
+      name: "Сергей Новиков",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sergey",
+      mutualFriends: 7,
+      sentAt: new Date(),
+      type: "incoming"
+    }
+  ]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [addFriendQuery, setAddFriendQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Friend[]>([]);
+  const [suggestions, setSuggestions] = useState<Friend[]>([
+    {
+      id: "s1",
+      name: "Ольга Морозова",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=olga",
+      status: "online",
+      mutualFriends: 4,
+      bio: "Frontend разработчик"
+    },
+    {
+      id: "s2",
+      name: "Павел Лебедев",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=pavel",
+      status: "offline",
+      mutualFriends: 2,
+      bio: "QA инженер"
+    }
+  ]);
+  const [blockedUsers, setBlockedUsers] = useState<Friend[]>([]);
 
   const acceptRequest = (requestId: string) => {
     const request = requests.find(r => r.id === requestId);
@@ -74,10 +171,27 @@ export default function FriendsList() {
     setFriends(friends.filter(f => f.id !== friendId));
   };
 
+  const blockUser = (friendId: string) => {
+    const friend = friends.find(f => f.id === friendId);
+    if (friend) {
+      setBlockedUsers([...blockedUsers, { ...friend, isBlocked: true }]);
+      setFriends(friends.filter(f => f.id !== friendId));
+    }
+  };
+
+  const unblockUser = (userId: string) => {
+    const user = blockedUsers.find(u => u.id === userId);
+    if (user) {
+      setFriends([...friends, { ...user, isBlocked: false }]);
+      setBlockedUsers(blockedUsers.filter(u => u.id !== userId));
+    }
+  };
+
   const getStatusColor = (status: Friend["status"]) => {
     switch (status) {
       case "online": return "bg-green-500";
       case "away": return "bg-yellow-500";
+      case "dnd": return "bg-red-500";
       case "offline": return "bg-gray-400";
       default: return "bg-gray-400";
     }
@@ -87,6 +201,7 @@ export default function FriendsList() {
     switch (status) {
       case "online": return "В сети";
       case "away": return "Нет на месте";
+      case "dnd": return "Не беспокоить";
       case "offline": return "Не в сети";
       default: return "Не в сети";
     }
@@ -110,7 +225,7 @@ export default function FriendsList() {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="all">
                 Все ({friends.length})
               </TabsTrigger>
@@ -119,6 +234,9 @@ export default function FriendsList() {
               </TabsTrigger>
               <TabsTrigger value="requests">
                 Запросы ({incomingRequests.length})
+              </TabsTrigger>
+              <TabsTrigger value="blocked">
+                Заблок. ({blockedUsers.length})
               </TabsTrigger>
               <TabsTrigger value="add">
                 Добавить
@@ -140,32 +258,54 @@ export default function FriendsList() {
               <ScrollArea className="h-[400px] pr-4">
                 <div className="space-y-3">
                   {filteredFriends.map((friend) => (
-                    <div key={friend.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
+                    <div key={friend.id} className="flex items-start gap-3 p-4 rounded-lg hover:bg-gray-50 transition-colors group border border-transparent hover:border-gray-200">
                       <div className="relative">
                         <img 
                           src={friend.avatar} 
                           alt={friend.name}
-                          className="w-12 h-12 rounded-full"
+                          className="w-14 h-14 rounded-full"
                         />
                         <div className={`absolute bottom-0 right-0 w-4 h-4 ${getStatusColor(friend.status)} border-2 border-white rounded-full`}></div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold truncate">{friend.name}</p>
-                        <p className="text-sm text-gray-500 truncate">
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="font-semibold truncate">{friend.name}</p>
+                          {friend.mutualFriends && friend.mutualFriends > 0 && (
+                            <Badge variant="secondary" className="text-xs">
+                              {friend.mutualFriends} общих
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-500 truncate mb-2">
                           {friend.statusText || getStatusText(friend.status)}
                         </p>
+                        {friend.bio && (
+                          <p className="text-xs text-gray-400 mb-2 truncate">{friend.bio}</p>
+                        )}
+                        {friend.tags && friend.tags.length > 0 && (
+                          <div className="flex gap-1 flex-wrap">
+                            {friend.tags.slice(0, 3).map((tag, idx) => (
+                              <Badge key={idx} variant="outline" className="text-xs">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button size="sm" variant="outline">
-                          <Icon name="MessageCircle" size={16} className="mr-1" />
-                          Написать
+                          <Icon name="MessageCircle" size={16} />
+                        </Button>
+                        <Button size="sm" variant="outline">
+                          <Icon name="Phone" size={16} />
                         </Button>
                         <Button 
                           size="sm" 
                           variant="ghost"
-                          onClick={() => removeFriend(friend.id)}
+                          onClick={() => blockUser(friend.id)}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
                         >
-                          <Icon name="UserMinus" size={16} />
+                          <Icon name="Ban" size={16} />
                         </Button>
                       </div>
                     </div>
@@ -286,6 +426,42 @@ export default function FriendsList() {
                   </div>
                 )}
               </div>
+            </TabsContent>
+
+            {/* Заблокированные */}
+            <TabsContent value="blocked" className="space-y-4">
+              <ScrollArea className="h-[400px] pr-4">
+                <div className="space-y-3">
+                  {blockedUsers.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">
+                      <Icon name="Ban" size={48} className="mx-auto mb-3 opacity-50" />
+                      <p>Нет заблокированных пользователей</p>
+                    </div>
+                  ) : (
+                    blockedUsers.map((user) => (
+                      <div key={user.id} className="flex items-center gap-3 p-4 rounded-lg bg-red-50 border border-red-100">
+                        <img 
+                          src={user.avatar} 
+                          alt={user.name}
+                          className="w-12 h-12 rounded-full opacity-60"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold truncate">{user.name}</p>
+                          <p className="text-sm text-red-600">Заблокирован</p>
+                        </div>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => unblockUser(user.id)}
+                        >
+                          <Icon name="UserCheck" size={16} className="mr-1" />
+                          Разблокировать
+                        </Button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </ScrollArea>
             </TabsContent>
 
             {/* Добавить друга */}
