@@ -4,6 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
+import VoiceChat from "@/components/VoiceChat";
 import { useState } from "react";
 
 const Index = () => {
@@ -88,6 +89,7 @@ const Index = () => {
             <div className="hidden md:flex items-center gap-8">
               <a href="#home" className="text-gray-700 hover:text-primary transition-colors">Главная</a>
               <a href="#features" className="text-gray-700 hover:text-primary transition-colors">Возможности</a>
+              <a href="#voice" className="text-gray-700 hover:text-primary transition-colors">Голосовой чат</a>
               <a href="#security" className="text-gray-700 hover:text-primary transition-colors">Безопасность</a>
               <a href="#faq" className="text-gray-700 hover:text-primary transition-colors">FAQ</a>
               <a href="#support" className="text-gray-700 hover:text-primary transition-colors">Поддержка</a>
@@ -192,6 +194,20 @@ const Index = () => {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="voice" className="py-20 px-6">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-5xl font-bold mb-4">Голосовой чат</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Общайтесь голосом в реальном времени, как в Discord
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <VoiceChat />
           </div>
         </div>
       </section>
