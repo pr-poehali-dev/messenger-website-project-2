@@ -6,10 +6,23 @@ import { Textarea } from "@/components/ui/textarea";
 import Icon from "@/components/ui/icon";
 import UnifiedChat from "@/components/UnifiedChat";
 import EncryptedChat from "@/components/EncryptedChat";
+import AuthSystem from "@/components/AuthSystem";
+import UserProfile from "@/components/UserProfile";
 import { useState } from "react";
+
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  password: string;
+  avatar: string;
+  createdAt: Date;
+}
 
 const Index = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [showAuth, setShowAuth] = useState(false);
 
   const features = [
     {
@@ -79,6 +92,31 @@ const Index = () => {
     setFormData({ name: "", email: "", message: "" });
   };
 
+  const handleLogin = (user: User) => {
+    setCurrentUser(user);
+    setShowAuth(false);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+  };
+
+  if (showAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <AuthSystem onLogin={handleLogin} />
+      </div>
+    );
+  }
+
+  if (currentUser && !showAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <UserProfile user={currentUser} onLogout={handleLogout} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-lg border-b border-gray-200 z-50">
@@ -94,8 +132,12 @@ const Index = () => {
               <a href="#encryption" className="text-gray-700 hover:text-primary transition-colors">Шифрование</a>
               <a href="#support" className="text-gray-700 hover:text-primary transition-colors">Поддержка</a>
             </div>
-            <Button className="gradient-blue-green text-white border-0 hover:opacity-90">
-              Скачать
+            <Button 
+              onClick={() => setShowAuth(true)}
+              className="gradient-blue-green text-white border-0 hover:opacity-90"
+            >
+              <Icon name="UserCircle" className="mr-2" size={18} />
+              Войти
             </Button>
           </div>
         </div>
