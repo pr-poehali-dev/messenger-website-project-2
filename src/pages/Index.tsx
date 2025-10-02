@@ -250,7 +250,7 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="flex gap-4 justify-center mb-8 animate-fade-in">
+          <div className="flex justify-center mb-8 animate-fade-in">
             <Button 
               size="lg" 
               className="bg-[#0088CC] hover:bg-[#0077B3] text-white"
@@ -258,14 +258,6 @@ const Index = () => {
             >
               <Icon name="Send" className="mr-2" size={20} />
               Telegram
-            </Button>
-            <Button 
-              size="lg" 
-              className="bg-[#25D366] hover:bg-[#20BA5A] text-white"
-              onClick={() => window.open('https://wa.me/your_whatsapp', '_blank')}
-            >
-              <Icon name="MessageCircle" className="mr-2" size={20} />
-              WhatsApp
             </Button>
           </div>
 
