@@ -101,6 +101,12 @@ const Index = () => {
     setCurrentUser(null);
   };
 
+  const handleUpdateAvatar = (avatar: string) => {
+    if (currentUser) {
+      setCurrentUser({ ...currentUser, avatar });
+    }
+  };
+
   if (showAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
@@ -112,7 +118,11 @@ const Index = () => {
   if (currentUser && !showAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
-        <UserProfile user={currentUser} onLogout={handleLogout} />
+        <UserProfile 
+          user={currentUser} 
+          onLogout={handleLogout}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
       </div>
     );
   }

@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
+import AvatarCreator from "./AvatarCreator";
 
 interface User {
   id: string;
@@ -14,9 +16,11 @@ interface User {
 interface UserProfileProps {
   user: User;
   onLogout: () => void;
+  onUpdateAvatar: (avatar: string) => void;
 }
 
-export default function UserProfile({ user, onLogout }: UserProfileProps) {
+export default function UserProfile({ user, onLogout, onUpdateAvatar }: UserProfileProps) {
+  const [showAvatarCreator, setShowAvatarCreator] = useState(false);
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('ru-RU', {
       year: 'numeric',
@@ -25,16 +29,33 @@ export default function UserProfile({ user, onLogout }: UserProfileProps) {
     });
   };
 
+  const handleSaveAvatar = (avatar: string) => {
+    onUpdateAvatar(avatar);
+    setShowAvatarCreator(false);
+  };
+
+  if (showAvatarCreator) {
+    return <AvatarCreator onSave={handleSaveAvatar} currentAvatar={user.avatar} />;
+  }
+
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="relative">
         <div className="h-32 bg-gradient-to-r from-primary to-purple-500 rounded-t-lg absolute top-0 left-0 right-0"></div>
         <div className="relative pt-20 flex flex-col items-center">
-          <img 
-            src={user.avatar} 
-            alt={user.username}
-            className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
-          />
+          <div className="relative group">
+            <img 
+              src={user.avatar} 
+              alt={user.username}
+              className="w-24 h-24 rounded-full border-4 border-white shadow-lg"
+            />
+            <button
+              onClick={() => setShowAvatarCreator(true)}
+              className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Icon name="Camera" size={24} className="text-white" />
+            </button>
+          </div>
           <CardTitle className="mt-4 text-2xl">{user.username}</CardTitle>
           <p className="text-muted-foreground">{user.email}</p>
         </div>
@@ -63,6 +84,14 @@ export default function UserProfile({ user, onLogout }: UserProfileProps) {
             Настройки аккаунта
           </h3>
           <div className="space-y-2">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start"
+              onClick={() => setShowAvatarCreator(true)}
+            >
+              <Icon name="Image" className="mr-2" size={18} />
+              Изменить аватар
+            </Button>
             <Button variant="outline" className="w-full justify-start">
               <Icon name="User" className="mr-2" size={18} />
               Редактировать профиль
