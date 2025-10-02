@@ -26,11 +26,6 @@ const Index = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [showAuth, setShowAuth] = useState(false);
-  const [showIncomingCall, setShowIncomingCall] = useState(false);
-  const [incomingCaller, setIncomingCaller] = useState({
-    name: "Алексей",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
-  });
 
   const features = [
     {
@@ -151,23 +146,13 @@ const Index = () => {
               <a href="#friends" className="text-gray-700 hover:text-primary transition-colors">Друзья</a>
               <a href="#support" className="text-gray-700 hover:text-primary transition-colors">Поддержка</a>
             </div>
-            <div className="flex gap-3">
-              <Button 
-                onClick={() => setShowIncomingCall(true)}
-                variant="outline"
-                size="sm"
-              >
-                <Icon name="Phone" className="mr-2" size={18} />
-                Тест звонка
-              </Button>
-              <Button 
-                onClick={() => setShowAuth(true)}
-                className="gradient-blue-green text-white border-0 hover:opacity-90"
-              >
-                <Icon name="UserCircle" className="mr-2" size={18} />
-                Войти
-              </Button>
-            </div>
+            <Button 
+              onClick={() => setShowAuth(true)}
+              className="gradient-blue-green text-white border-0 hover:opacity-90"
+            >
+              <Icon name="UserCircle" className="mr-2" size={18} />
+              Войти
+            </Button>
           </div>
         </div>
       </nav>
@@ -482,14 +467,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-
-      {showIncomingCall && (
-        <VoiceCall
-          caller={incomingCaller}
-          onAccept={() => setShowIncomingCall(false)}
-          onDecline={() => setShowIncomingCall(false)}
-        />
-      )}
     </div>
   );
 };

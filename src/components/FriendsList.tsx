@@ -26,88 +26,13 @@ interface FriendRequest {
 }
 
 export default function FriendsList() {
-  const [friends, setFriends] = useState<Friend[]>([
-    {
-      id: "1",
-      name: "Алексей",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
-      status: "online",
-      statusText: "Играет в игру",
-      mutualFriends: 5
-    },
-    {
-      id: "2",
-      name: "Мария",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria",
-      status: "offline",
-      mutualFriends: 3
-    },
-    {
-      id: "3",
-      name: "Дмитрий",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dmitry",
-      status: "online",
-      statusText: "В сети",
-      mutualFriends: 8
-    },
-    {
-      id: "4",
-      name: "Анна",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Anna",
-      status: "away",
-      statusText: "Нет на месте",
-      mutualFriends: 2
-    }
-  ]);
+  const [friends, setFriends] = useState<Friend[]>([]);
 
-  const [requests, setRequests] = useState<FriendRequest[]>([
-    {
-      id: "1",
-      userId: "user5",
-      name: "Иван Петров",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Ivan",
-      mutualFriends: 12,
-      sentAt: new Date(Date.now() - 3600000),
-      type: "incoming"
-    },
-    {
-      id: "2",
-      userId: "user6",
-      name: "Елена Сидорова",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Elena",
-      mutualFriends: 4,
-      sentAt: new Date(Date.now() - 7200000),
-      type: "incoming"
-    },
-    {
-      id: "3",
-      userId: "user7",
-      name: "Сергей Ковалёв",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sergey",
-      mutualFriends: 0,
-      sentAt: new Date(Date.now() - 1800000),
-      type: "outgoing"
-    }
-  ]);
+  const [requests, setRequests] = useState<FriendRequest[]>([]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [addFriendQuery, setAddFriendQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Friend[]>([
-    {
-      id: "s1",
-      name: "Николай Соколов",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Nikolay",
-      status: "online",
-      mutualFriends: 15
-    },
-    {
-      id: "s2",
-      name: "Ольга Новикова",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Olga",
-      status: "offline",
-      mutualFriends: 7
-    }
-  ]);
+  const [suggestions, setSuggestions] = useState<Friend[]>([]);
 
   const acceptRequest = (requestId: string) => {
     const request = requests.find(r => r.id === requestId);

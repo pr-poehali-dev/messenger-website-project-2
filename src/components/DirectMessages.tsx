@@ -33,69 +33,10 @@ interface DirectMessagesProps {
 }
 
 export default function DirectMessages({ currentUserId, currentUserName, currentUserAvatar }: DirectMessagesProps) {
-  const [chats, setChats] = useState<DirectChat[]>([
-    {
-      id: "1",
-      userId: "user1",
-      userName: "Алексей",
-      userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
-      lastMessage: "Привет! Как дела?",
-      lastMessageTime: new Date(Date.now() - 300000),
-      unreadCount: 2,
-      isOnline: true
-    },
-    {
-      id: "2",
-      userId: "user2",
-      userName: "Мария",
-      userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maria",
-      lastMessage: "Отлично, спасибо!",
-      lastMessageTime: new Date(Date.now() - 3600000),
-      unreadCount: 0,
-      isOnline: false
-    },
-    {
-      id: "3",
-      userId: "user3",
-      userName: "Дмитрий",
-      userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dmitry",
-      lastMessage: "Созвонимся завтра?",
-      lastMessageTime: new Date(Date.now() - 7200000),
-      unreadCount: 1,
-      isOnline: true
-    }
-  ]);
+  const [chats, setChats] = useState<DirectChat[]>([]);
 
-  const [activeChat, setActiveChat] = useState<DirectChat | null>(chats[0]);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      senderId: "user1",
-      senderName: "Алексей",
-      senderAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
-      content: "Привет! Как дела?",
-      timestamp: new Date(Date.now() - 300000),
-      isRead: true
-    },
-    {
-      id: "2",
-      senderId: currentUserId,
-      senderName: currentUserName,
-      senderAvatar: currentUserAvatar,
-      content: "Привет! Всё отлично, спасибо!",
-      timestamp: new Date(Date.now() - 180000),
-      isRead: true
-    },
-    {
-      id: "3",
-      senderId: "user1",
-      senderName: "Алексей",
-      senderAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
-      content: "Рад слышать! Работаешь над новым проектом?",
-      timestamp: new Date(Date.now() - 60000),
-      isRead: false
-    }
-  ]);
+  const [activeChat, setActiveChat] = useState<DirectChat | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
