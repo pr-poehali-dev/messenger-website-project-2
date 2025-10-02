@@ -71,7 +71,9 @@ const Index = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    const subject = encodeURIComponent(`Поддержка Not Lock: ${formData.name}`);
+    const body = encodeURIComponent(`Имя: ${formData.name}\nEmail: ${formData.email}\n\nСообщение:\n${formData.message}`);
+    window.location.href = `mailto:timofey.dyakonenko@mail.ru?subject=${subject}&body=${body}`;
     setFormData({ name: "", email: "", message: "" });
   };
 
