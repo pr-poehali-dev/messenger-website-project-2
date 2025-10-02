@@ -81,7 +81,7 @@ const Index = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <img src="https://cdn.poehali.dev/files/b4dd4c30-699b-4f6f-a2d2-927daeee8639.png" alt="Not Lock" className="h-10 w-auto" />
+              <img src="https://cdn.poehali.dev/files/b4dd4c30-699b-4f6f-a2d2-927daeee8639.png" alt="Not Lock" className="h-10 w-auto rounded-xl" />
             </div>
             <div className="hidden md:flex items-center gap-8">
               <a href="#home" className="text-gray-700 hover:text-primary transition-colors">Главная</a>
@@ -296,7 +296,7 @@ const Index = () => {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <img src="https://cdn.poehali.dev/files/b4dd4c30-699b-4f6f-a2d2-927daeee8639.png" alt="Not Lock" className="h-10 w-auto" />
+                <img src="https://cdn.poehali.dev/files/b4dd4c30-699b-4f6f-a2d2-927daeee8639.png" alt="Not Lock" className="h-10 w-auto rounded-xl" />
               </div>
               <p className="text-gray-400">
                 Современный мессенджер для быстрого и безопасного общения
