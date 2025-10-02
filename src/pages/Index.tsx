@@ -249,6 +249,26 @@ const Index = () => {
               Не нашли ответ? Свяжитесь с нами напрямую
             </p>
           </div>
+          
+          <div className="flex gap-4 justify-center mb-8 animate-fade-in">
+            <Button 
+              size="lg" 
+              className="bg-[#0088CC] hover:bg-[#0077B3] text-white"
+              onClick={() => window.open('https://t.me/your_telegram', '_blank')}
+            >
+              <Icon name="Send" className="mr-2" size={20} />
+              Telegram
+            </Button>
+            <Button 
+              size="lg" 
+              className="bg-[#25D366] hover:bg-[#20BA5A] text-white"
+              onClick={() => window.open('https://wa.me/your_whatsapp', '_blank')}
+            >
+              <Icon name="MessageCircle" className="mr-2" size={20} />
+              WhatsApp
+            </Button>
+          </div>
+
           <Card className="border-0 shadow-2xl animate-scale-in">
             <CardContent className="p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
