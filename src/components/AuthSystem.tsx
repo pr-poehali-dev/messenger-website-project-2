@@ -10,6 +10,7 @@ interface User {
   id: string;
   email: string;
   username: string;
+  displayName: string;
   password: string;
   avatar: string;
   createdAt: Date;
@@ -28,6 +29,7 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
   const [loginPassword, setLoginPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerUsername, setRegisterUsername] = useState("");
+  const [registerDisplayName, setRegisterDisplayName] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -38,7 +40,7 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
     setError("");
     setSuccess("");
 
-    if (!registerEmail || !registerUsername || !registerPassword) {
+    if (!registerEmail || !registerUsername || !registerDisplayName || !registerPassword) {
       setError("Все поля обязательны для заполнения");
       return;
     }
@@ -63,6 +65,7 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
       id: Date.now().toString(),
       email: registerEmail,
       username: registerUsername,
+      displayName: registerDisplayName,
       password: registerPassword,
       avatar: "https://cdn.poehali.dev/files/b4dd4c30-699b-4f6f-a2d2-927daeee8639.png",
       createdAt: new Date()
@@ -74,6 +77,7 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
     setSuccess("Регистрация успешна! Теперь можете войти");
     setRegisterEmail("");
     setRegisterUsername("");
+    setRegisterDisplayName("");
     setRegisterPassword("");
     setRegisterConfirmPassword("");
   };
@@ -179,13 +183,23 @@ export default function AuthSystem({ onLogin }: AuthSystemProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="register-username">Имя пользователя</Label>
+                <Label htmlFor="register-username">Имя пользователя (логин)</Label>
                 <Input
                   id="register-username"
                   type="text"
                   placeholder="johndoe"
                   value={registerUsername}
                   onChange={(e) => setRegisterUsername(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="register-displayname">Отображаемое имя</Label>
+                <Input
+                  id="register-displayname"
+                  type="text"
+                  placeholder="Иван Иванов"
+                  value={registerDisplayName}
+                  onChange={(e) => setRegisterDisplayName(e.target.value)}
                 />
               </div>
               <div className="space-y-2">

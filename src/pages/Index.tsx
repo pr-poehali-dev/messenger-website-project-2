@@ -20,6 +20,7 @@ interface User {
   id: string;
   email: string;
   username: string;
+  displayName: string;
   password: string;
   avatar: string;
   createdAt: Date;

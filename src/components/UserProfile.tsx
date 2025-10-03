@@ -8,6 +8,7 @@ interface User {
   id: string;
   email: string;
   username: string;
+  displayName?: string;
   password: string;
   avatar: string;
   createdAt: Date;
@@ -116,8 +117,9 @@ export default function UserProfile({ user, onLogout, onUpdateAvatar, onUpdateSt
               <Icon name="Camera" size={24} className="text-white" />
             </button>
           </div>
-          <CardTitle className="mt-4 text-2xl">{user.username}</CardTitle>
-          <p className="text-muted-foreground">{user.email}</p>
+          <CardTitle className="mt-4 text-2xl">{user.displayName || user.username}</CardTitle>
+          <p className="text-muted-foreground">@{user.username}</p>
+          <p className="text-sm text-gray-500">{user.email}</p>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">

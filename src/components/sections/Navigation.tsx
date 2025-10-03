@@ -5,6 +5,7 @@ interface User {
   id: string;
   email: string;
   username: string;
+  displayName?: string;
   password: string;
   avatar: string;
   createdAt: Date;
@@ -39,7 +40,7 @@ export default function Navigation({ currentUser, onShowAuth, onShowProfile }: N
               className="gradient-blue-green text-white border-0 hover:opacity-90"
             >
               <Icon name="User" className="mr-2" size={18} />
-              {currentUser.username}
+              {currentUser.displayName || currentUser.username}
             </Button>
           ) : (
             <Button 
