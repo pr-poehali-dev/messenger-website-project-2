@@ -6,6 +6,7 @@ import AuthSystem from "@/components/AuthSystem";
 import UserProfile from "@/components/UserProfile";
 import DirectMessages from "@/components/DirectMessages";
 import FriendsList from "@/components/FriendsList";
+import ProfileEdit from "@/components/ProfileEdit";
 import Navigation from "@/components/sections/Navigation";
 import HeroSection from "@/components/sections/HeroSection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
@@ -32,6 +33,7 @@ const Index = () => {
   });
   const [showAuth, setShowAuth] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
 
   const handleLogin = (user: User) => {
     setCurrentUser(user);
@@ -64,6 +66,24 @@ const Index = () => {
             Назад на главную
           </Button>
           <AuthSystem onLogin={handleLogin} />
+        </div>
+      </div>
+    );
+  }
+
+  if (currentUser && showProfileEdit) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="w-full max-w-4xl">
+          <Button 
+            variant="ghost" 
+            onClick={() => setShowProfileEdit(false)}
+            className="mb-4"
+          >
+            <Icon name="ArrowLeft" size={20} className="mr-2" />
+            Назад на главную
+          </Button>
+          <ProfileEdit />
         </div>
       </div>
     );
@@ -141,6 +161,20 @@ const Index = () => {
           <FriendsList />
         </div>
       </section>
+
+      {currentUser && (
+        <section id="profile-edit" className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
+          <div className="container mx-auto">
+            <div className="text-center mb-16 animate-fade-in">
+              <h2 className="text-5xl font-bold mb-4">Редактирование профиля</h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Настройте свой профиль, статус и приватность
+              </p>
+            </div>
+            <ProfileEdit />
+          </div>
+        </section>
+      )}
 
       <section id="encryption" className="py-20 px-6 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto">
