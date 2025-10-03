@@ -196,59 +196,60 @@ export default function FriendsList() {
                 ) : (
                   <div className="space-y-3">
                     {filteredFriends.map((friend) => (
-                    <div key={friend.id} className="flex items-start gap-3 p-4 rounded-lg hover:bg-gray-50 transition-colors group border border-transparent hover:border-gray-200">
-                      <div className="relative">
-                        <img 
-                          src={friend.avatar} 
-                          alt={friend.name}
-                          className="w-14 h-14 rounded-full"
-                        />
-                        <div className={`absolute bottom-0 right-0 w-4 h-4 ${getStatusColor(friend.status)} border-2 border-white rounded-full`}></div>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p className="font-semibold truncate">{friend.name}</p>
-                          {friend.mutualFriends && friend.mutualFriends > 0 && (
-                            <Badge variant="secondary" className="text-xs">
-                              {friend.mutualFriends} общих
-                            </Badge>
+                      <div key={friend.id} className="flex items-start gap-3 p-4 rounded-lg hover:bg-gray-50 transition-colors group border border-transparent hover:border-gray-200">
+                        <div className="relative">
+                          <img 
+                            src={friend.avatar} 
+                            alt={friend.name}
+                            className="w-14 h-14 rounded-full"
+                          />
+                          <div className={`absolute bottom-0 right-0 w-4 h-4 ${getStatusColor(friend.status)} border-2 border-white rounded-full`}></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-semibold truncate">{friend.name}</p>
+                            {friend.mutualFriends && friend.mutualFriends > 0 && (
+                              <Badge variant="secondary" className="text-xs">
+                                {friend.mutualFriends} общих
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-500 truncate mb-2">
+                            {friend.statusText || getStatusText(friend.status)}
+                          </p>
+                          {friend.bio && (
+                            <p className="text-xs text-gray-400 mb-2 truncate">{friend.bio}</p>
+                          )}
+                          {friend.tags && friend.tags.length > 0 && (
+                            <div className="flex gap-1 flex-wrap">
+                              {friend.tags.slice(0, 3).map((tag, idx) => (
+                                <Badge key={idx} variant="outline" className="text-xs">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
                           )}
                         </div>
-                        <p className="text-sm text-gray-500 truncate mb-2">
-                          {friend.statusText || getStatusText(friend.status)}
-                        </p>
-                        {friend.bio && (
-                          <p className="text-xs text-gray-400 mb-2 truncate">{friend.bio}</p>
-                        )}
-                        {friend.tags && friend.tags.length > 0 && (
-                          <div className="flex gap-1 flex-wrap">
-                            {friend.tags.slice(0, 3).map((tag, idx) => (
-                              <Badge key={idx} variant="outline" className="text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        )}
+                        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button size="sm" variant="outline">
+                            <Icon name="MessageCircle" size={16} />
+                          </Button>
+                          <Button size="sm" variant="outline">
+                            <Icon name="Phone" size={16} />
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="ghost"
+                            onClick={() => blockUser(friend.id)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Icon name="Ban" size={16} />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button size="sm" variant="outline">
-                          <Icon name="MessageCircle" size={16} />
-                        </Button>
-                        <Button size="sm" variant="outline">
-                          <Icon name="Phone" size={16} />
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="ghost"
-                          onClick={() => blockUser(friend.id)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Icon name="Ban" size={16} />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </ScrollArea>
             </TabsContent>
 
